@@ -1,0 +1,35 @@
+name: "PDM Pytest"
+description: "Set up Python with PDM and run pytest"
+
+inputs:
+  python-version:
+    description: "Python version to use"
+    required: true
+  pdm-args:
+    description: "Extra arguments for pdm install"
+    required: false
+    default: ""
+  pytest-args:
+    description: "Extra arguments for pytest"
+    required: false
+    default: ""
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ inputs.python-version }}
+
+    - name: Install PDM
+      shell: bash
+      run: pip install pdm
+
+    - name: Install dependencies
+      shell: bash
+      run: pdm install ${{ inputs.pdm-args }}
+
+    - name: Run tests
+      shell: bash
+      run: pdm run pytest ${{ inputs.pytest-args }}
