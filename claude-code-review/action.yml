@@ -8,6 +8,10 @@ inputs:
   github-token:
     description: "GitHub token for posting PR comments"
     required: true
+  anthropic-base-url:
+    description: "Anthropic API base URL"
+    required: false
+    default: ""
   model:
     description: "Claude model to use"
     required: false
@@ -71,6 +75,7 @@ runs:
       shell: bash
       env:
         ANTHROPIC_API_KEY: ${{ inputs.anthropic-api-key }}
+        ANTHROPIC_BASE_URL: ${{ inputs.anthropic-base-url }}
       run: |
         PR_TITLE="${{ steps.pr.outputs.title }}"
         PR_BODY=$(cat /tmp/pr_body.txt)
